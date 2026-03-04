@@ -1,0 +1,94 @@
+# OS files
+.DS_Store
+**/.DS_Store
+.Trashes
+.Spotlight-V100
+.AppleDouble
+.LSOverride
+._*
+
+# Python
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+*.py[cod]
+*.egg-info/
+.Python
+venv/
+.venv/
+**/.venv/
+**/venv/
+dist/
+*.whl
+
+# MATLAB generated
+*.asv
+*.mex*
+*.m~
+*.autosave
+slprj/
+codegen/
+*.ctf
+
+# Build artifacts
+build/
+.build/
+**/.build/
+DerivedData/
+**/DerivedData/
+
+# Xcode
+xcuserdata/
+**/xcuserdata/
+*.xcuserstate
+*.xccheckout
+*.xcscmblueprint
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+*.moved-aside
+
+# Logs
+*.log
+logs/*.log
+
+# Environment and secrets
+.env
+credentials.json
+gcp/keys/
+*firebase-adminsdk*.json
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Claude Code
+**/.claude/settings.local.json
+
+# Generated data and caches
+.git_viz_cache/
+assets/processed/
+!assets/processed/README.md
+assets/PCA/
+assets/TDA/
+assets/visualizations/
+corpus_analysis.json
+
+# Temp files
+*.tmp
+temp/
+
+# Generated docs (from CI/CD scripts)
+FINAL_BUILD_SUCCESS.md
+DASHBOARD_FIX_SUMMARY.md
+BUILD_SUCCESS.md
+COMPILATION_STATUS.md
+ACTIVE_FILES_STATUS.md
+documentation/auto_*
