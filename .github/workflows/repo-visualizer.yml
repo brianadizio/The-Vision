@@ -1,0 +1,20 @@
+name: Repo visualizer
+
+on:
+  push:
+    branches: [main, master]
+    paths-ignore:
+      - 'diagram.svg'
+  workflow_dispatch:
+
+jobs:
+  diagram:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: githubocto/repo-visualizer@0.9.1
+        with:
+          excluded_paths: "node_modules,build,dist,venv,.venv,__pycache__,.git,.idea,.vscode"
+          commit_message: "chore(viz): update repo diagram [skip ci]"
