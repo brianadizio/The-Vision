@@ -1,0 +1,70 @@
+{
+  "solution": "The Vision",
+  "id": "GES-65",
+  "total_prompts": 7,
+  "prompts": [
+    {
+      "prompt_id": "PROMPT-VISION-001",
+      "file": "prompt_vision_001_generalize_import.md",
+      "description": "Generalize JSON import to accept TDA from all Solutions",
+      "category": "architecture",
+      "priority": "high",
+      "dependencies": [],
+      "affects": ["PersistenceModels.swift", "ExperimentListView.swift", "ContentView.swift"]
+    },
+    {
+      "prompt_id": "PROMPT-VISION-002",
+      "file": "prompt_vision_002_nature_environments.md",
+      "description": "Add Nature environment backgrounds from Sachuest Point",
+      "category": "feature",
+      "priority": "high",
+      "dependencies": ["PHYS-VISION-002", "PHYS-VISION-004"],
+      "affects": ["ContentView.swift", "CoastalDesignSystem.swift"]
+    },
+    {
+      "prompt_id": "PROMPT-VISION-003",
+      "file": "prompt_vision_003_hand_gestures.md",
+      "description": "Implement hand gesture interaction for 3D persistence diagrams",
+      "category": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "affects": ["PointCloud3DView.swift", "PersistenceDiagramView.swift", "PhaseSpaceTrajectoryView.swift"]
+    },
+    {
+      "prompt_id": "PROMPT-VISION-004",
+      "file": "prompt_vision_004_phase_space.md",
+      "description": "Phase space manipulation from SSEUQFT data",
+      "category": "feature",
+      "priority": "medium",
+      "dependencies": ["PROMPT-VISION-001"],
+      "affects": ["PhaseSpaceTrajectoryView.swift", "PersistenceModels.swift"]
+    },
+    {
+      "prompt_id": "PROMPT-VISION-005",
+      "file": "prompt_vision_005_spatial_audio.md",
+      "description": "Spatial audio — map Betti numbers to Shepard tones",
+      "category": "feature",
+      "priority": "medium",
+      "dependencies": ["PROMPT-VISION-001"],
+      "affects": ["new: SpatialAudioEngine.swift", "BettiCurvesView.swift"]
+    },
+    {
+      "prompt_id": "PROMPT-VISION-006",
+      "file": "prompt_vision_006_restriction_maps.md",
+      "description": "Build restriction map exporters to Golden Cipher and Witness",
+      "category": "integration",
+      "priority": "medium",
+      "dependencies": ["PROMPT-VISION-003"],
+      "affects": ["new: SessionRecorder.swift", "new: RestrictionMapExporter.swift"]
+    },
+    {
+      "prompt_id": "PROMPT-VISION-007",
+      "file": "prompt_vision_007_sachuest_now.md",
+      "description": "Integrate with Sachuest Now as the initial calm experience",
+      "category": "integration",
+      "priority": "low",
+      "dependencies": ["PROMPT-VISION-001", "PROMPT-VISION-002"],
+      "affects": ["ContentView.swift", "PersistenceViewerApp.swift"]
+    }
+  ]
+}

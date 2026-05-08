@@ -391,3 +391,87 @@ struct MyVisualizationView: View {
 3. **Collaborative viewing**: Multi-user immersive sessions
 4. **Voice commands**: "Show me band 5 of config 2"
 5. **Export to PDF/image**: Share visualizations externally
+
+## Solution Configuration
+
+**App-ID**: GES-65 | **Mode**: interactive (secondary: computational) | **Sector**: visual, knowledge, computational | **Build Stage**: Stage 1 (active development)
+
+### Configuration Files
+- **Main config**: `../The Golden Core/src/core/SolutionConfigurations/the_vision.json`
+- **Local copy**: `config/solution_config.json`
+- **TOML manifest fragment**: `config/golden_toml_entry.toml`
+- **Prompt index**: `config/prompts/prompt_index.json`
+
+### Types Coverage
+- **Types_Subjects** (26): Spacetime, Topology, Nature, Software, Computation, Mind, Body, Transform, Phenomena, Mechanical, Domain, Kernel, Spatial, Wave, Digital, Manifold, Geometry, Sampling, Ocean, Thought, Eclipse, Surjective, Signal, Acoustics, Concept, Video
+- **Types_Kinds** (12): Study, Question, Data, Experiment, Figure, Meditation, Surjective Submersion, Representation, Embedding, Concepts, Submersion, Example
+
+### Sampling Domains
+`3D-sphere, 3D-immersed-circle, S2, S3, Rn` — Phase spaces on spherical manifolds, TDA features as immersed loops, gaze direction on S2, SO(3) for 3D manipulation, PCA embeddings in Rn.
+
+### Data Phi Sheaf
+Primary: Data E Sheaf (signals/math being visualized), Data C Sheaf (3D visual processing)
+Secondary: Data B Sheaf (visual aesthetics), Data I Sheaf (cosmic data), Data A Sheaf (maze integration), Data J Sheaf (Nature/ecological data)
+
+## Golden Compiler Integration
+
+The Vision is an interactive Solution in the Golden.toml manifest with secondary computational properties. It consumes TDA data from multiple computational Solutions and produces behavioral interaction data.
+
+### Restriction Maps (Active)
+| Target | Map | Format |
+|--------|-----|--------|
+| Data Phi Sheaf | immersive_tda_export | json |
+| Sachuest Now | environment_models | usdz |
+| The Golden Cipher | spatial_interaction_trajectory | jsonl |
+| The Witness | session_log | jsonl |
+
+### Restriction Maps (Incoming)
+| Source | Map | Format |
+|--------|-----|--------|
+| SSEUQFT | sonar_tda_results | json |
+| The Golden Core | pca_embeddings | json |
+| The Theme | design_tokens | swift_package |
+| Network Algorithm | processed_frames | json |
+
+### Consistency Matrix Role
+The Vision participates in two key cocycle conditions:
+1. **SSEUQFT → The Vision → Data Phi Sheaf**: Sonar TDA must preserve topological invariants through visualization
+2. **The Vision → Golden Cipher → The Witness**: Behavioral signatures must preserve trajectory topology under segmentation
+
+## Immersive Topology Coverage
+
+Query processed notebook pages by Types_Subjects: Spacetime, Topology, Nature, Manifold, Geometry, Spatial, Wave, Ocean, Signal, Acoustics, Sampling, Computation, Mind, Body, Transform, Phenomena.
+
+Run type-search queries to find relevant pages for VR content design.
+
+## Physical Tasks (Brian Required)
+
+- [ ] PHYS-VISION-001: LiDAR scan Sachuest Point for 3D environment models
+- [ ] PHYS-VISION-002: Capture spatial video at Sachuest Point
+- [ ] PHYS-VISION-003: Record spatial audio at Sachuest (ocean, birds, wind)
+- [ ] PHYS-VISION-004: Photograph Nature scenes for skybox textures
+- [ ] PHYS-VISION-005: Test current build on Vision Pro hardware
+
+## Development Prompts
+
+7 development prompts in `config/prompts/` with index at `config/prompts/prompt_index.json`. Execute in priority order:
+
+1. **VISION-01** (high): Generalize JSON import for all Solutions' TDA data
+2. **VISION-02** (high): Add Nature environment backgrounds (Sachuest Point)
+3. **VISION-03** (high): Hand gesture interaction for 3D persistence diagrams
+4. **VISION-04** (medium): Phase space manipulation from SSEUQFT (depends on 01)
+5. **VISION-05** (medium): Spatial audio — Betti → Shepard tones (depends on 01)
+6. **VISION-06** (medium): Restriction map exporters (depends on 03)
+7. **VISION-07** (low): Sachuest Now integration (depends on 01, 02)
+
+## OpenClaw Skill Bridge
+
+The Vision has two OpenClaw skills in `~/.openclaw/skills/`:
+
+- **golden-build-the-vision** (Tier 1 Builder): FAT skill with full seven-field specification. Triggers: "build the vision", "work on the vision", "configure the vision", "vision pro app"
+- **golden-run-the-vision** (Tier 2 Operational): THIN skill for accessing VR session data. Triggers: "vision data", "persistence viewer", "visionpro analysis"
+
+### Claude Code Slash Command Bridge
+- `/golden-build-the-vision` — reads SKILL.md and enters plan mode for building
+- The SKILL.md is the master copy; CLAUDE.md extracts from it; Golden.toml is machine-readable summary
+- All three are views of the same sheaf section

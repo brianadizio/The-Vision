@@ -1,0 +1,599 @@
+{
+  "solution_name": "The Vision",
+  "id": "GES-65",
+  "solution_number": 63,
+  "mode": "interactive",
+  "secondary_mode": "computational",
+  "sector": ["visual", "knowledge", "computational"],
+
+  "description": "The Vision is a 3D immersive environment being developed for Apple Vision Pro that allows users to experience the beginnings of Sachuest Now, by experiencing topological signal processing immersively, in a Nature environment like Sachuest Point in Middletown, Rhode Island. It will include manipulation of phase spaces, like from SSEUQFT, The Golden Core, and from all Solutions. Currently implemented as PersistenceViewer — a visionOS app that visualizes persistence diagrams, Betti curves, point clouds, manifold embeddings, and phase space trajectories from MATLAB sonar simulations using RealityKit and SwiftUI.",
+
+  "main_problem": "How do we view and analyze topological data analysis curves and data in a calm, serene environment?",
+
+  "manifest": {
+    "sampling_domain": ["3D-sphere", "3D-immersed-circle", "S2", "S3", "Rn"],
+    "sampling_domain_justification": {
+      "3D-sphere": "Phase spaces of sonar data and topological signal processing outputs live on spherical manifolds; persistence diagrams from S2-sampled signals are the primary visualization target",
+      "3D-immersed-circle": "TDA persistence features trace immersed loops in filtration space; birth-death pairs define curves immersed in the persistence plane that extend to 3D when parameterized by frequency band",
+      "S2": "Spatial orientation on Vision Pro maps to the 2-sphere — head direction and gaze tracking produce data on S2; skybox environments are parameterized by S2",
+      "S3": "The rotation group SO(3) ~ S3 governs 3D object manipulation in VR — rotating persistence diagrams, point clouds, and phase space trajectories in immersive space",
+      "Rn": "PCA embeddings and point clouds in n-dimensional Euclidean space (reduced to R3 for visualization); raw data arrays from MATLAB live in Rn before dimensionality reduction"
+    },
+    "input_types": ["live_trajectory", "historical_archive", "point_cloud", "persistence_diagram", "spatial_video"],
+    "output_types": [
+      "immersive_visualization",
+      "spatial_interaction_trajectory",
+      "annotated_persistence_diagram",
+      "session_metrics",
+      "topological_signature"
+    ],
+    "live_interface": "visionpro",
+    "archive_path": "/assets/processed/vision_sessions/",
+    "archive_format": "jsonl",
+    "session_data_schema": {
+      "session_id": "string (UUID)",
+      "timestamp": "ISO8601",
+      "experiment_loaded": "string (experiment filename)",
+      "bands_viewed": "array of band indices",
+      "visualizations_used": "array of string (persistence_diagram|point_cloud|betti_curves|phase_space|manifold_embedding|landscape)",
+      "interaction_events": "array of {type, position_3d, rotation, timestamp}",
+      "gaze_trajectory": "array of {direction_s2, timestamp}",
+      "hand_gestures": "array of {gesture_type, position_3d, timestamp}",
+      "total_duration_ms": "integer",
+      "annotations_made": "array of {feature_id, note, timestamp}"
+    },
+    "dependencies": ["sseuqft", "the_golden_core", "the_theme"],
+    "restriction_maps": [
+      {
+        "target": "data_phi_sheaf",
+        "map": "immersive_tda_export",
+        "format": "json",
+        "description": "Persistence diagrams viewed and annotated in VR space, with user attention metadata"
+      },
+      {
+        "target": "sachuest_now",
+        "map": "environment_models",
+        "format": "usdz",
+        "description": "3D Nature environments and spatial data for use in the full Sachuest Now game"
+      },
+      {
+        "target": "the_golden_cipher",
+        "map": "spatial_interaction_trajectory",
+        "format": "jsonl",
+        "description": "Head/hand tracking behavioral data from VR sessions for behavioral biometric authentication"
+      },
+      {
+        "target": "the_witness",
+        "map": "session_log",
+        "format": "jsonl",
+        "description": "All VR session data for temporal sheaf audit trail"
+      }
+    ],
+    "build_status": "development",
+    "data_simulation": "Generate synthetic persistence diagrams using MATLAB surf2patch with known topological genus (sphere, torus, double torus). Create simulated point clouds by sampling uniformly on known manifolds with controlled Gaussian noise. Use Enhanced_Export_Test.json (6.2MB, 80 bands) as reference for data format."
+  },
+
+  "specification": {
+    "ancestry": {
+      "parent_solutions": ["SSEUQFT", "The Data Phi Sheaf", "The Vision"],
+      "types_subjects": [
+        "Spacetime", "Topology", "Nature", "Software", "Computation", "Mind", "Body",
+        "Transform", "Phenomena", "Mechanical", "Domain", "Kernel", "Spatial", "Wave",
+        "Digital", "Manifold", "Geometry", "Sampling", "Ocean", "Thought", "Eclipse",
+        "Surjective", "Signal", "Acoustics", "Concept", "Video"
+      ],
+      "types_kinds": [
+        "Study", "Question", "Data", "Experiment", "Figure", "Meditation",
+        "Surjective Submersion", "Representation", "Embedding", "Concepts",
+        "Submersion", "Example"
+      ],
+      "papers_relation": "Visualization frontend for SSEUQFT sonar data and all TDA results; relates to Paper 1 via phase space visualization",
+      "immersive_topology_relation": "Notebook pages about immersive environments, topology visualization, Nature, and spatial computing inform the design of the VR experience"
+    },
+
+    "sampling_domain": {
+      "topological_spaces": ["3D-sphere", "3D-immersed-circle", "S2", "S3", "Rn"],
+      "description": "The Vision operates at the intersection of multiple sampling domains. The primary data being visualized (persistence diagrams, point clouds, PCA embeddings) comes from signals sampled on spheres and immersed circles via SSEUQFT. The VR interaction itself generates data on S2 (gaze direction) and S3 (rotation group for 3D manipulation). The rendering space is R3 embedded in the broader Rn of the original data."
+    },
+
+    "input_specification": {
+      "data_in": [
+        "3D environments (USDZ models, spatial photos)",
+        "PCA data (JSON point clouds from Golden Core)",
+        "Point clouds (3D coordinates with topological metadata)",
+        "Sachuest 3D models (future LiDAR scans)",
+        "Spatial video (iPhone/Vision Pro captures)",
+        "Spatial audio (Nature recordings)",
+        "Persistence diagrams from SSEUQFT (JSON format via export_to_visionpro.py)",
+        "Experiment data from Mobius Band project (JSON with configurations, bands, statistics)"
+      ],
+      "input_path": "/Users/briandizio/Documents/2023-Now/Golden Enterprise Solutions/Solutions/The Vision/assets/raw/",
+      "formats": [".json", ".usdz", ".mov", ".mp4", ".wav", ".reality", ".png", ".jpg"],
+      "live_data": "Head tracking (gaze direction on S2), hand gesture positions (3D coordinates), spatial interaction events, annotation inputs",
+      "archive_data": "Experiment JSON files with persistence diagrams, Betti curves, point clouds, manifold embeddings per frequency band. Currently synced from Mobius Band project.",
+      "simulated_data": "SIMULATED: Generate synthetic persistence diagrams using MATLAB surf2patch with known genus; sample point clouds on known manifolds (sphere, torus, Klein bottle approximation) with controlled noise sigma=0.01-0.1; format matching Enhanced_Export_Test.json schema"
+    },
+
+    "transformation_core": {
+      "description": "Transforms pre-computed topological data analysis results into immersive 3D visualizations on Apple Vision Pro. Renders persistence diagrams as 2D scatter plots in spatial windows, point clouds as RealityKit ModelEntity meshes, Betti curves as interactive line charts, manifold embeddings (Isomap, LLE, Diffusion Map) as rotatable 3D spaces, and phase space trajectories as animated paths. The Coastal Design System provides nature-themed UI consistent with the Sachuest Point environment.",
+      "gui_name": "PersistenceViewer (visionOS SwiftUI app)",
+      "visualization_views": [
+        "ExperimentListView: Main navigation showing experiment metadata, drill-down to configurations",
+        "PersistenceDiagramView: 2D scatter of birth-death pairs colored by homology dimension (H0=blue, H1=green, H2=red)",
+        "PointCloud3DView: RealityKit 3D point cloud with rotation/zoom gestures, LOD rendering",
+        "BettiCurvesView: Line charts showing Betti numbers across filtration parameter (100 bins x 3 dimensions)",
+        "ManifoldEmbeddingView: Tabs for Isomap, LLE, Diffusion Map — 3D point cloud embeddings",
+        "PhaseSpaceTrajectoryView: Animated 3D trajectory through phase space (2000 points)",
+        "FrequencyBandGridView: Grid navigator for 20 frequency bands per configuration",
+        "PersistenceLandscapeView: Persistence landscape visualization (5 layers x 100 bins)"
+      ],
+      "design_system": "CoastalDesignSystem.swift — ocean blues, sandy beiges, sunset oranges; SF Pro typography; high contrast for VR readability",
+      "toolbox_dependencies": ["visionOS SDK", "RealityKit", "SwiftUI", "RealityComposer Pro"]
+    },
+
+    "output_specification": {
+      "data_out": [
+        "Immersive 3D visualizations rendered on Vision Pro",
+        "Spatial interaction trajectories (gaze, hand, head tracking)",
+        "Annotated persistence diagrams (user-added notes on topological features)",
+        "Session metrics (duration, visualizations used, bands explored)",
+        "Screenshots and recordings of immersive sessions"
+      ],
+      "output_path": "/Users/briandizio/Documents/2023-Now/Golden Enterprise Solutions/Solutions/The Vision/assets/processed/",
+      "formats": [".json", ".jsonl", ".png", ".mov"]
+    },
+
+    "restriction_maps_detail": {
+      "sends_to": [
+        {
+          "target": "Data Phi Sheaf",
+          "map": "immersive_tda_export",
+          "format": "json",
+          "description": "Persistence diagrams with user attention metadata — which features were examined, how long, spatial annotations"
+        },
+        {
+          "target": "Sachuest Now",
+          "map": "environment_models",
+          "format": "usdz",
+          "description": "3D Nature environments (Sachuest Point models, skyboxes) usable in the full VR game"
+        },
+        {
+          "target": "The Golden Cipher",
+          "map": "spatial_interaction_trajectory",
+          "format": "jsonl",
+          "description": "Head/hand tracking behavioral data from VR sessions — gaze patterns on S2, gesture timing, navigation sequences for behavioral biometric authentication"
+        },
+        {
+          "target": "The Witness",
+          "map": "session_log",
+          "format": "jsonl",
+          "description": "Complete VR session data for temporal sheaf audit trail"
+        }
+      ],
+      "receives_from": [
+        {
+          "source": "SSEUQFT",
+          "map": "sonar_tda_results",
+          "format": "json",
+          "description": "Persistence diagrams, Betti curves, point clouds from sonar signal processing via export_to_visionpro.py"
+        },
+        {
+          "source": "The Golden Core",
+          "map": "pca_embeddings",
+          "format": "json",
+          "description": "PCA results and dimensionality reduction data for 3D visualization"
+        },
+        {
+          "source": "The Theme",
+          "map": "design_tokens",
+          "format": "swift_package",
+          "description": "GoldenTheme Swift package providing consistent UI design across all Solution frontends"
+        },
+        {
+          "source": "Network Algorithm (Sub Network Algorithm)",
+          "map": "processed_frames",
+          "format": "json",
+          "description": "Processed video/image data with mathematical special effects for 3D immersive display"
+        }
+      ]
+    },
+
+    "build_status_detail": {
+      "state": "Development",
+      "build_stage": "stage_1",
+      "current_stage_label": "development",
+      "what_exists": [
+        "visionOS SwiftUI app (PersistenceViewer) with 15 Swift source files",
+        "Data models (PersistenceModels.swift) — full hierarchy for experiments, configurations, bands, features",
+        "8 visualization views (persistence diagrams, point clouds, Betti curves, manifold embeddings, phase space, frequency band grid, persistence landscape)",
+        "Coastal Design System (ocean blues, sandy beiges, high-contrast VR theme)",
+        "RealityKit integration for 3D point cloud rendering",
+        "Data sync pipeline from Mobius Band project (sync_to_visionpro.sh, export_to_visionpro.py)",
+        "2 large JSON test datasets (Enhanced_Export_Test.json at 6.2MB, experiment_2025-10-06_220239.json at 6.6MB)",
+        "5 documentation files (GUI_ARCHITECTURE.md, IMPLEMENTATION_STATUS.md, SYNC_WORKFLOW.md, QUICKSTART.md, QUICK_REFERENCE.md)",
+        "RealityComposer Pro package for 3D assets",
+        "Xcode project file (PersistenceViewer.xcodeproj)"
+      ],
+      "what_missing": [
+        "Generalized data import from all Solutions (currently only Mobius Band data)",
+        "Nature environment backgrounds (Sachuest Point spatial video/photos)",
+        "Hand gesture interaction for manipulating persistence diagrams in 3D",
+        "Phase space manipulation tools (rotate, zoom, slice)",
+        "Spatial audio integration (Nature sounds, Shepard tone mapping)",
+        "Restriction map exporters to Golden Cipher, Witness, Data Phi Sheaf",
+        "Sachuest Now integration as initial experience",
+        "LiDAR-scanned 3D Sachuest Point environment",
+        "Session recording and replay system"
+      ],
+      "can_simulate": true,
+      "simulation_approach": "Generate synthetic persistence diagrams using MATLAB surf2patch with known topological genus. Create simulated point clouds by sampling on known manifolds (sphere, torus, double torus, Klein bottle approximation) with controlled Gaussian noise. Use Enhanced_Export_Test.json as format reference. For VR interaction data, generate synthetic gaze trajectories on S2 using random walks on the sphere."
+    }
+  },
+
+  "build_stages": {
+    "stage_1_raw_development": {
+      "status": "active",
+      "description": "Core Swift/visionOS app with 8 visualization views, data models, Coastal Design System, data sync from Mobius Band project"
+    },
+    "stage_2_generalize_data": {
+      "status": "planned",
+      "description": "Generalize data import to accept TDA results from all Solutions, not just Mobius Band. Add Nature environment backgrounds."
+    },
+    "stage_3_interaction": {
+      "status": "planned",
+      "description": "Hand gesture interaction for 3D manipulation, phase space slicing, spatial audio mapping of topological features"
+    },
+    "stage_4_integration": {
+      "status": "planned",
+      "description": "Restriction map exporters, Golden Cipher behavioral data capture, Sachuest Now bridge, session recording"
+    },
+    "stage_5_publication": {
+      "status": "dream",
+      "description": "Full immersive topology experience with all Solutions' data viewable in VR, App Store release for Vision Pro"
+    }
+  },
+
+  "physical_tasks_required": {
+    "flag": true,
+    "description": "Brian must complete physical scanning, capturing, and recording tasks. The Solution can be built with existing test data and simulated environments in the meantime.",
+    "tasks": [
+      {
+        "task_id": "PHYS-VISION-001",
+        "description": "LiDAR scan Sachuest Point National Wildlife Refuge for 3D environment models",
+        "status": "not_started",
+        "requirement_key": "LiDARScanSachuest",
+        "blocks": "Accurate 3D Sachuest environment for immersive VR",
+        "workaround": "Use placeholder skybox images or Apple-provided VR environments"
+      },
+      {
+        "task_id": "PHYS-VISION-002",
+        "description": "Capture spatial video at Sachuest Point using iPhone 15 Pro or Vision Pro",
+        "status": "not_started",
+        "requirement_key": "CaptureSpatialVideoAtSachuest",
+        "blocks": "Immersive Nature video background for data visualization",
+        "workaround": "Use static Nature photos as environment textures"
+      },
+      {
+        "task_id": "PHYS-VISION-003",
+        "description": "Record spatial audio at Sachuest Point (ocean waves, birds, wind through grass)",
+        "status": "not_started",
+        "requirement_key": "RecordSpatialAudioAtSachuest",
+        "blocks": "Ambient Nature soundscape for immersive experience",
+        "workaround": "Use royalty-free Nature audio or synthesized ocean sounds"
+      },
+      {
+        "task_id": "PHYS-VISION-004",
+        "description": "Photograph Nature scenes at Sachuest for skybox/environment textures",
+        "status": "not_started",
+        "requirement_key": "PhotographNatureScenesForSkybox",
+        "blocks": "Panoramic skybox environments for VR",
+        "workaround": "Use Coastal Design System colors on plain gradient backgrounds"
+      },
+      {
+        "task_id": "PHYS-VISION-005",
+        "description": "Test current PersistenceViewer build on Vision Pro hardware",
+        "status": "not_started",
+        "requirement_key": "TestOnVisionProHardware",
+        "blocks": "Real-device performance profiling and gesture testing",
+        "workaround": "Test on Vision Pro simulator in Xcode"
+      }
+    ]
+  },
+
+  "prompts": {
+    "from_brian": [
+      {
+        "prompt_id": "PROMPT-VISION-001",
+        "description": "Expand PersistenceViewer to accept data from all Solutions — generalize JSON import beyond Mobius Band format to accept any Solution's TDA output",
+        "category": "architecture",
+        "priority": "high",
+        "affects": ["PersistenceModels.swift", "ExperimentListView.swift", "ContentView.swift"]
+      },
+      {
+        "prompt_id": "PROMPT-VISION-002",
+        "description": "Add Nature environment backgrounds — Sachuest Point photos and spatial video as immersive context behind data visualizations",
+        "category": "feature",
+        "priority": "high",
+        "affects": ["ContentView.swift", "CoastalDesignSystem.swift"],
+        "depends_on": "PHYS-VISION-002 or PHYS-VISION-004 or placeholder workaround"
+      },
+      {
+        "prompt_id": "PROMPT-VISION-003",
+        "description": "Implement hand gesture interaction for manipulating persistence diagrams in 3D space — pinch to select features, drag to rotate, spread to zoom",
+        "category": "feature",
+        "priority": "high",
+        "affects": ["PointCloud3DView.swift", "PersistenceDiagramView.swift", "PhaseSpaceTrajectoryView.swift"]
+      },
+      {
+        "prompt_id": "PROMPT-VISION-004",
+        "description": "Add phase space manipulation from SSEUQFT data — interactive rotate, zoom, slice through phase spaces with real-time cross-section display",
+        "category": "feature",
+        "priority": "medium",
+        "affects": ["PhaseSpaceTrajectoryView.swift", "PersistenceModels.swift"]
+      },
+      {
+        "prompt_id": "PROMPT-VISION-005",
+        "description": "Create spatial audio integration — map topological features to sound using Shepard tones (Data Y Sheaf). Higher Betti numbers = higher pitch, persistent features = sustained tones",
+        "category": "feature",
+        "priority": "medium",
+        "affects": ["new: SpatialAudioEngine.swift", "BettiCurvesView.swift"]
+      },
+      {
+        "prompt_id": "PROMPT-VISION-006",
+        "description": "Build restriction map exporters — capture VR interaction data (gaze S2 trajectory, hand gestures, navigation patterns) and export to Golden Cipher and The Witness",
+        "category": "integration",
+        "priority": "medium",
+        "affects": ["new: SessionRecorder.swift", "new: RestrictionMapExporter.swift"]
+      },
+      {
+        "prompt_id": "PROMPT-VISION-007",
+        "description": "Integrate with Sachuest Now as the beginning experience — The Vision is the serene entry point before the full game. Provide a calm, meditative VR data exploration space",
+        "category": "integration",
+        "priority": "low",
+        "affects": ["ContentView.swift", "PersistenceViewerApp.swift"]
+      }
+    ],
+    "prompt_files_path": "/Users/briandizio/Documents/2023-Now/Golden Enterprise Solutions/Solutions/The Vision/config/prompts/"
+  },
+
+  "data_phi_sheaf": {
+    "primary_sheaves": ["E", "C"],
+    "secondary_sheaves": ["B", "I", "A", "J"],
+    "classification": {
+      "E_sheaf": {
+        "role": "primary",
+        "description": "Sampling, Signals, BEM, Simulations, Lattices, Groups, Rings, Fields, Varieties, Schemes, Functions — the core mathematical data being visualized: persistence diagrams, Betti curves, PCA embeddings, phase spaces from sonar/signal processing",
+        "data_contributed": "Immersive 3D visualizations of persistence diagrams, point clouds, and manifold embeddings with user interaction metadata"
+      },
+      "C_sheaf": {
+        "role": "primary",
+        "description": "Network Algorithm and its data — 3D visual processing of topological structures, spatial video data, RealityKit rendered frames",
+        "data_contributed": "3D rendered topological objects, spatial video captures, immersive scene compositions"
+      },
+      "B_sheaf": {
+        "role": "secondary",
+        "description": "The Portraits — visual aesthetic data from the Coastal Design System, color space topology of the VR environment",
+        "data_contributed": "Color palette data, visual complexity metrics of rendered scenes"
+      },
+      "I_sheaf": {
+        "role": "secondary",
+        "description": "Astrophysics, Global, Universe Data — cosmic/global scale data that could be visualized in the immersive environment",
+        "data_contributed": "Future: large-scale astrophysical datasets rendered as immersive point clouds"
+      },
+      "A_sheaf": {
+        "role": "secondary",
+        "description": "The Maze — potential integration of maze graph structures as 3D immersive spaces to walk through",
+        "data_contributed": "Future: maze topology rendered as navigable 3D environments"
+      },
+      "J_sheaf": {
+        "role": "secondary",
+        "description": "Ecosystems, Life, Each, Local-Universe-Data — Nature environment data from Sachuest Point ecological context",
+        "data_contributed": "Environmental data (Sachuest wildlife, vegetation, ocean) as immersive context overlays"
+      }
+    },
+    "all_sheaves_listed": "Data A Sheaf (The Maze), Data B Sheaf (The Portraits), Data C Sheaf (Network Algorithm and its data), Data D Sheaf, Data E Sheaf (Sampling, Signals, BEM, Simulations, Lattices, Groups, Rings, Fields, Varieties, Schemes, Functions, etc.), Data F Sheaf (PvNP, Gameplay), Data G Sheaf (Fluid Flow, Navier Stokes), Data H Sheaf (Prime Distributions, Riemann), Data I Sheaf (Astrophysics, Global, Universe Data), Data J Sheaf (Ecosystems, Life, Each, Local-Universe-Data), Data K Sheaf (The Honeycomb and The Cards, Fonts, Derivation Algorithm), Data X Sheaf (Zipf's Law Analysis), Data Y Sheaf (Shepard Tone), Data Z Sheaf (Cymatics)"
+  },
+
+  "tools": ["Claude API"],
+
+  "solution_relationships": ["SSEUQFT", "The Data Phi Sheaf", "The Vision", "Sachuest Now", "The Golden Core", "The Theme", "Network Algorithm (Sub Network Algorithm)"],
+
+  "final_publication_form": "Vision Pro application",
+
+  "front_end": {
+    "platform": "Swift/SwiftUI/RealityKit (visionOS)",
+    "project_path": "src/core/front_end/Persistence Viewer/PersistenceViewer/",
+    "xcode_project": "PersistenceViewer.xcodeproj",
+    "target_platform": "visionOS 1.0+",
+    "file_count": 15,
+    "structure": {
+      "models": ["PersistenceModels.swift"],
+      "views": {
+        "main": "ContentView.swift",
+        "app_entry": "PersistenceViewerApp.swift",
+        "navigation": "ExperimentListView.swift",
+        "visualizations": [
+          "PersistenceDiagramView.swift",
+          "PointCloud3DView.swift",
+          "BettiCurvesView.swift",
+          "ManifoldEmbeddingView.swift",
+          "PhaseSpaceTrajectoryView.swift",
+          "FrequencyBandGridView.swift",
+          "PersistenceLandscapeView.swift"
+        ]
+      },
+      "design_system": "CoastalDesignSystem.swift",
+      "utilities": "SharedViewComponents.swift",
+      "realitykit_package": "Packages/RealityKitContent/"
+    },
+    "data_files": [
+      "Data/Enhanced_Export_Test.json (6.2 MB, 80 bands)",
+      "Data/experiment_2025-10-06_220239.json (6.6 MB, real data)"
+    ]
+  },
+
+  "to_do": [
+    "Generalize data import from all Solutions (not just Mobius Band)",
+    "Add Nature environment backgrounds (Sachuest Point)",
+    "Implement hand gesture interaction for 3D persistence diagram manipulation",
+    "Add phase space manipulation tools from SSEUQFT data",
+    "Create spatial audio integration (Shepard tone mapping)",
+    "Build restriction map exporters to Golden Cipher and Witness",
+    "Integrate with Sachuest Now as beginning experience",
+    "LiDAR scan Sachuest Point (physical task)",
+    "Capture spatial video and audio at Sachuest (physical task)",
+    "Test on Vision Pro hardware (physical task)",
+    "Session recording and replay system",
+    "Cross-experiment comparison view"
+  ],
+
+  "simulation": "For initial app development, use simulated data where necessary. Enhanced_Export_Test.json (6.2MB, 80 bands) and experiment_2025-10-06_220239.json (6.6MB) provide real test data. For new features, generate synthetic persistence diagrams with known topological properties.",
+
+  "pre_processing": "Data is pre-processed in the Mobius Band MATLAB project: MATLAB simulations generate sonar data, fixedComputePerBandTDA.py computes TDA, export_to_visionpro.py converts to Vision-compatible JSON format, sync_to_visionpro.sh copies to The Vision's Data/ directory.",
+
+  "golden_lake_relation": "Future: VR session interaction data (gaze trajectories, gesture patterns, feature attention) will be stored in Golden Lake for longitudinal analysis",
+
+  "golden_core_relation": "Consumes PCA embeddings and TDA results from Golden Core services. Uses TDA-relay for topological computations on new data sources.",
+
+  "file_inventory": {
+    "solution_dir": "/Users/briandizio/Documents/2023-Now/Golden Enterprise Solutions/Solutions/The Vision/",
+    "claude_md": "CLAUDE.md",
+    "algorithm_path": "src/core/algorithm/",
+    "gui_path": "src/core/front_end/Persistence Viewer/PersistenceViewer/PersistenceViewer.xcodeproj",
+    "frontend_path": "src/core/front_end/Persistence Viewer/PersistenceViewer/",
+    "testing_path": "src/core/testing/",
+    "data_input": "assets/raw/",
+    "data_output": "assets/processed/",
+    "app_data": "src/core/front_end/Persistence Viewer/PersistenceViewer/PersistenceViewer/Data/",
+    "documentation": [
+      "src/core/front_end/Persistence Viewer/PersistenceViewer/GUI_ARCHITECTURE.md",
+      "src/core/front_end/Persistence Viewer/PersistenceViewer/IMPLEMENTATION_STATUS.md",
+      "src/core/front_end/Persistence Viewer/PersistenceViewer/SYNC_WORKFLOW.md",
+      "src/core/front_end/Persistence Viewer/PersistenceViewer/QUICKSTART.md",
+      "src/core/front_end/Persistence Viewer/PersistenceViewer/QUICK_REFERENCE.md"
+    ],
+    "pca_data": "assets/PCA/",
+    "config": "config/",
+    "logs": "logs/",
+    "metadata": "metadata/"
+  },
+
+  "golden_toml_entry": {
+    "section": "[solutions.the_vision]",
+    "id": "GES-65",
+    "mode": "interactive",
+    "secondary_mode": "computational",
+    "sampling_domain": ["3D-sphere", "3D-immersed-circle", "S2", "S3", "Rn"],
+    "input_types": ["live_trajectory", "historical_archive", "point_cloud", "persistence_diagram", "spatial_video"],
+    "output_types": ["immersive_visualization", "spatial_interaction_trajectory", "annotated_persistence_diagram", "session_metrics", "topological_signature"],
+    "live_interface": "visionpro",
+    "archive_path": "/assets/processed/vision_sessions/",
+    "archive_format": "jsonl",
+    "session_data_schema": "session_id, experiment_loaded, bands_viewed, visualizations_used, interaction_events, gaze_trajectory, hand_gestures, total_duration_ms, annotations_made",
+    "dependencies": ["sseuqft", "the_golden_core", "the_theme"],
+    "sector": ["visual", "knowledge", "computational"],
+    "build_status": "development"
+  },
+
+  "data_simulation_protocol": {
+    "description": "Generate synthetic topological data for pipeline testing when real experiment data from Mobius Band is unavailable",
+    "steps": [
+      "1. Generate synthetic manifolds in MATLAB: sphere via surf2patch(sphere(50)), torus via parameterized (R+r*cos(v))*cos(u), double torus via connected sum",
+      "2. Sample N=100-1000 points uniformly on each manifold surface with additive Gaussian noise (sigma=0.01 to 0.1)",
+      "3. Compute persistence diagrams using Ripser or MATLAB TDA toolbox — verify known Betti numbers (sphere: b0=1, b2=1; torus: b0=1, b1=2, b2=1)",
+      "4. Format as PersistenceExperiment JSON matching Enhanced_Export_Test.json schema: configurations → bands → persistenceDiagram, statistics, bettiCurves, pointCloud",
+      "5. Generate 4 configurations with 20 bands each (80 bands total, matching real data structure)",
+      "6. For VR interaction simulation: generate random walks on S2 (gaze trajectory) using von Mises-Fisher distribution, and random hand gesture events",
+      "7. Save experiment JSON to src/core/front_end/Persistence Viewer/PersistenceViewer/PersistenceViewer/Data/",
+      "8. Save session simulation JSONLs to assets/processed/vision_sessions/"
+    ]
+  },
+
+  "immersive_topology_query": {
+    "description": "Query processed Immersive Topology notebook pages by Types_Subjects relevant to The Vision",
+    "query_types": [
+      "Spacetime", "Topology", "Nature", "Software", "Computation", "Mind", "Body",
+      "Transform", "Phenomena", "Mechanical", "Domain", "Kernel", "Spatial", "Wave",
+      "Digital", "Manifold", "Geometry", "Sampling", "Ocean", "Thought", "Eclipse",
+      "Surjective", "Signal", "Acoustics", "Concept", "Video"
+    ],
+    "query_method": "Use /type-search or /notebook-browse Claude Code commands, or rag.ask() for codebase queries",
+    "integration_point": "Results saved to assets/raw/immersive_topology_references.jsonl for incorporation into VR content design and mathematical context",
+    "example_queries": [
+      "/type-search Spacetime Manifold -- find pages about spacetime manifold structures for VR display",
+      "/type-search Nature Ocean Spatial -- find pages about Nature environments and spatial experiences",
+      "/type-search Topology Signal Acoustics -- find pages about topological signal processing relevant to sonar visualization",
+      "/notebook-browse --types Meditation,Nature -- find contemplative pages informing the calm VR environment",
+      "/archive-search 'persistence diagram visualization' -- find historical precursors of the Vision approach"
+    ]
+  },
+
+  "consistency_matrix": {
+    "description": "Hooks for the topological compiler consistency check. The compiler iterates through all files in SolutionConfigurations/ and validates format compatibility and cocycle conditions.",
+    "outgoing_maps": {
+      "data_phi_sheaf": {
+        "map_name": "immersive_tda_export",
+        "output_format": "json",
+        "output_schema": "persistence diagrams with user attention metadata (feature_id, view_duration_ms, annotation_text, spatial_position)",
+        "validates_against": "E Sheaf and C Sheaf input schemas"
+      },
+      "sachuest_now": {
+        "map_name": "environment_models",
+        "output_format": "usdz",
+        "output_schema": "3D model files with metadata JSON (location, capture_date, scale, coordinate_system)",
+        "validates_against": "Sachuest Now environment import schema"
+      },
+      "the_golden_cipher": {
+        "map_name": "spatial_interaction_trajectory",
+        "output_format": "jsonl",
+        "output_schema": "behavioral trajectory with gaze_s2, hand_positions, gesture_types, timing per session_data_schema",
+        "validates_against": "Golden Cipher behavioral trajectory input schema"
+      },
+      "the_witness": {
+        "map_name": "session_log",
+        "output_format": "jsonl",
+        "output_schema": "session data per session_data_schema",
+        "validates_against": "witness log schema"
+      }
+    },
+    "incoming_maps": {
+      "sseuqft": {
+        "map_name": "sonar_tda_results",
+        "input_format": "json",
+        "input_schema": "PersistenceExperiment JSON with configurations, bands, persistence features, Betti curves, point clouds"
+      },
+      "the_golden_core": {
+        "map_name": "pca_embeddings",
+        "input_format": "json",
+        "input_schema": "point cloud arrays with dimensionality metadata and explained variance ratios"
+      },
+      "the_theme": {
+        "map_name": "design_tokens",
+        "input_format": "swift_package",
+        "input_schema": "GoldenTheme Swift package with color, typography, and component definitions"
+      },
+      "network_algorithm_sub": {
+        "map_name": "processed_frames",
+        "input_format": "json",
+        "input_schema": "frame metadata with mathematical transform parameters and output image paths"
+      }
+    },
+    "cocycle_conditions": [
+      {
+        "chain": "SSEUQFT -> The Vision -> Data Phi Sheaf",
+        "condition": "Sonar TDA results imported from SSEUQFT, when viewed and annotated in VR, must produce valid E Sheaf data with preserved topological invariants (Betti numbers unchanged by visualization transform)",
+        "status": "untested"
+      },
+      {
+        "chain": "The Vision -> The Golden Cipher -> The Witness",
+        "condition": "Spatial interaction trajectories exported to Golden Cipher for authentication, when logged by The Witness, must preserve behavioral signature topology (PH of trajectory invariant under session segmentation)",
+        "status": "untested"
+      },
+      {
+        "chain": "The Vision -> Sachuest Now -> The Vision",
+        "condition": "Environment models exported to Sachuest Now, when used in the full game and re-imported as game environments, must maintain geometric fidelity (mesh topology preserved)",
+        "status": "untested"
+      }
+    ]
+  }
+}
