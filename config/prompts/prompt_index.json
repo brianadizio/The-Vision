@@ -9,8 +9,11 @@
       "description": "Generalize JSON import to accept TDA from all Solutions",
       "category": "architecture",
       "priority": "high",
+      "status": "completed",
+      "completed_date": "2026-05-11",
       "dependencies": [],
-      "affects": ["PersistenceModels.swift", "ExperimentListView.swift", "ContentView.swift"]
+      "affects": ["PersistenceModels.swift", "ExperimentListView.swift", "ContentView.swift"],
+      "notes": "UniversalTDAImport.swift created with SolutionSource, UniversalTDAExperiment, TDADataset, LegacyFormatAdapter, UniversalDataLoader. Test JSONs for Pendulum Solver and Data Phi Sheaf added."
     },
     {
       "prompt_id": "PROMPT-VISION-002",
@@ -18,6 +21,7 @@
       "description": "Add Nature environment backgrounds from Sachuest Point",
       "category": "feature",
       "priority": "high",
+      "status": "pending",
       "dependencies": ["PHYS-VISION-002", "PHYS-VISION-004"],
       "affects": ["ContentView.swift", "CoastalDesignSystem.swift"]
     },
@@ -27,6 +31,7 @@
       "description": "Implement hand gesture interaction for 3D persistence diagrams",
       "category": "feature",
       "priority": "high",
+      "status": "pending",
       "dependencies": [],
       "affects": ["PointCloud3DView.swift", "PersistenceDiagramView.swift", "PhaseSpaceTrajectoryView.swift"]
     },
@@ -36,6 +41,7 @@
       "description": "Phase space manipulation from SSEUQFT data",
       "category": "feature",
       "priority": "medium",
+      "status": "pending",
       "dependencies": ["PROMPT-VISION-001"],
       "affects": ["PhaseSpaceTrajectoryView.swift", "PersistenceModels.swift"]
     },
@@ -45,6 +51,7 @@
       "description": "Spatial audio — map Betti numbers to Shepard tones",
       "category": "feature",
       "priority": "medium",
+      "status": "pending",
       "dependencies": ["PROMPT-VISION-001"],
       "affects": ["new: SpatialAudioEngine.swift", "BettiCurvesView.swift"]
     },
@@ -54,6 +61,7 @@
       "description": "Build restriction map exporters to Golden Cipher and Witness",
       "category": "integration",
       "priority": "medium",
+      "status": "pending",
       "dependencies": ["PROMPT-VISION-003"],
       "affects": ["new: SessionRecorder.swift", "new: RestrictionMapExporter.swift"]
     },
@@ -63,6 +71,7 @@
       "description": "Integrate with Sachuest Now as the initial calm experience",
       "category": "integration",
       "priority": "low",
+      "status": "pending",
       "dependencies": ["PROMPT-VISION-001", "PROMPT-VISION-002"],
       "affects": ["ContentView.swift", "PersistenceViewerApp.swift"]
     }
