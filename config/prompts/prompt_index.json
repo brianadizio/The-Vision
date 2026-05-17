@@ -31,9 +31,11 @@
       "description": "Implement hand gesture interaction for 3D persistence diagrams",
       "category": "feature",
       "priority": "high",
-      "status": "pending",
+      "status": "completed",
+      "completed_date": "2026-05-17",
       "dependencies": [],
-      "affects": ["PointCloud3DView.swift", "PersistenceDiagramView.swift", "PhaseSpaceTrajectoryView.swift"]
+      "affects": ["PointCloud3DView.swift", "PersistenceDiagramView.swift", "PhaseSpaceTrajectoryView.swift"],
+      "notes": "GestureRecorder.swift created with timestamped event capture for Golden Cipher restriction map. PointCloud3DView: pinch-select (TapGesture cycles through points), dragRotate + spreadZoom recording, selected point info panel. PersistenceDiagramView: spread-zoom via MagnificationGesture with scaleEffect, double-tap reset, tapAnnotate with annotation input field. PhaseSpaceTrajectoryView: slicing plane (X/Y/Z axis filter with threshold slider), dragRotate + spreadZoom recording. All events feed GestureRecorder for session export to assets/processed/vision_sessions/."
     },
     {
       "prompt_id": "PROMPT-VISION-004",
