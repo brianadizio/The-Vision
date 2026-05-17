@@ -27,6 +27,9 @@ enum GestureEventType: String, Codable {
     case viewReset          // Reset view to default
     case animationToggle    // Start/stop trajectory animation
     case dimensionToggle    // Toggle H0/H1/H2 visibility
+    case so3Rotate          // Full SO(3) rotation state after drag (quaternion snapshot)
+    case poincareSection    // Poincaré section computed at current slice plane
+    case animationSpeed     // Animation playback speed changed
 }
 
 // MARK: - Gesture Event
