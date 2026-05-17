@@ -12,6 +12,7 @@ import RealityKit
 struct PhaseSpaceTrajectoryView: View {
     let phaseSpace: VisualizationData
     let experimentName: String
+    var dataSource: String? = nil        // e.g. "SSEUQFT", "Mobius Band" — shown in header
     var gestureRecorder: GestureRecorder? = nil  // injected for session tracking
 
     @State private var rotation: simd_quatf = simd_quatf(angle: 0, axis: [0, 1, 0])
@@ -23,10 +24,18 @@ struct PhaseSpaceTrajectoryView: View {
     @State private var selectedBand: Int = 0
     @State private var showAllBands: Bool = true
 
+    // Animation speed multiplier: 0.5×, 1×, 2×, 4×
+    @State private var animationSpeed: Double = 1.0
+    private let speedOptions: [Double] = [0.5, 1.0, 2.0, 4.0]
+
     // Slicing plane: cut trajectory along one axis at a threshold
     @State private var sliceEnabled: Bool = false
     @State private var sliceAxis: SliceAxis = .y
     @State private var sliceThreshold: Float = 0.0
+
+    // Poincaré section: 2D cross-section at slice plane
+    @State private var showPoincareSection: Bool = false
+    private let poincareEpsilon: Float = 0.05  // half-width of the slab
 
     enum SliceAxis: String, CaseIterable {
         case x = "X", y = "Y", z = "Z"
@@ -66,12 +75,51 @@ struct PhaseSpaceTrajectoryView: View {
         return base
     }
 
+    /// Points within epsilon of the slice plane — the Poincaré section.
+    /// Projects onto the two axes perpendicular to the slice axis.
+    var poincarePoints: [(Float, Float)] {
+        guard sliceEnabled else { return [] }
+        let all = phaseSpace.simd3Points
+        return all.compactMap { pt in
+            let coord: Float
+            let u: Float
+            let v: Float
+            switch sliceAxis {
+            case .x: coord = pt.x; u = pt.y; v = pt.z
+            case .y: coord = pt.y; u = pt.x; v = pt.z
+            case .z: coord = pt.z; u = pt.x; v = pt.y
+            }
+            guard abs(coord - sliceThreshold) <= poincareEpsilon else { return nil }
+            return (u, v)
+        }
+    }
+
+    /// Axis labels for the 2D Poincaré projection axes
+    var poincareAxisLabels: (String, String) {
+        switch sliceAxis {
+        case .x: return ("Y", "Z")
+        case .y: return ("X", "Z")
+        case .z: return ("X", "Y")
+        }
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             // Header with controls
             HStack {
-                Text("Phase Space Trajectory")
-                    .font(.headline)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Phase Space Trajectory")
+                        .font(.headline)
+                    if let source = dataSource {
+                        Text(source)
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                            .padding(.horizontal, 5)
+                            .padding(.vertical, 2)
+                            .background(Color.coastalWater.opacity(0.15))
+                            .cornerRadius(4)
+                    }
+                }
 
                 Spacer()
 
@@ -191,6 +239,16 @@ struct PhaseSpaceTrajectoryView: View {
                             "experiment": experimentName,
                             "dx": String(format: "%.1f", value.translation.width),
                             "dy": String(format: "%.1f", value.translation.height)
+                        ])
+                        // SO(3) snapshot — full quaternion for restriction map
+                        let q = rotation
+                        gestureRecorder?.record(.so3Rotate, metadata: [
+                            "view": "phaseSpace",
+                            "experiment": experimentName,
+                            "qx": String(format: "%.5f", q.imag.x),
+                            "qy": String(format: "%.5f", q.imag.y),
+                            "qz": String(format: "%.5f", q.imag.z),
+                            "qw": String(format: "%.5f", q.real)
                         ])
                     }
             )
