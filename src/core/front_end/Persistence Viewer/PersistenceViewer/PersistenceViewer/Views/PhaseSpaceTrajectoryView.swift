@@ -346,13 +346,18 @@ struct PhaseSpaceTrajectoryView: View {
             // Animation controls
             VStack(spacing: 12) {
                 if showAllBands {
-                    // Animation scrubber
+                    // Animation scrubber + speed
                     HStack {
                         Button(action: {
                             isAnimating.toggle()
                             if isAnimating {
                                 startAnimation()
                             }
+                            gestureRecorder?.record(.animationToggle, metadata: [
+                                "view": "phaseSpace",
+                                "playing": "\(isAnimating)",
+                                "speed": String(format: "%.1f", animationSpeed)
+                            ])
                         }) {
                             Image(systemName: isAnimating ? "pause.circle.fill" : "play.circle.fill")
                                 .font(.title2)
@@ -366,6 +371,26 @@ struct PhaseSpaceTrajectoryView: View {
                             .font(.caption)
                             .foregroundStyle(.secondary)
                             .frame(width: 45)
+                    }
+
+                    // Speed picker
+                    HStack {
+                        Text("Speed:")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                        Picker("Speed", selection: $animationSpeed) {
+                            ForEach(speedOptions, id: \.self) { s in
+                                Text(s == 0.5 ? "0.5×" : "\(Int(s))×").tag(s)
+                            }
+                        }
+                        .pickerStyle(.segmented)
+                        .onChange(of: animationSpeed) { _, newSpeed in
+                            gestureRecorder?.record(.animationSpeed, metadata: [
+                                "view": "phaseSpace",
+                                "speed": String(format: "%.1f", newSpeed)
+                            ])
+                        }
+                        Spacer()
                     }
                 } else {
                     // Band selector
@@ -643,7 +668,7 @@ struct PhaseSpaceTrajectoryView: View {
                 return
             }
 
-            animationProgress += 0.01
+            animationProgress += 0.01 * animationSpeed
 
             if animationProgress >= 1.0 {
                 animationProgress = 0 // Loop
