@@ -1,0 +1,88 @@
+{
+  "name": "Sheaf Category Classification TDA",
+  "source": {
+    "solution_id": "GES-DPS",
+    "solution_name": "Data Phi Sheaf",
+    "export_version": "1.0",
+    "export_timestamp": "2026-05-11T01:15:00Z"
+  },
+  "description": "Persistence diagrams from the A-Z sheaf category classifier (DPS-03). Each dataset represents a sheaf category's topological signature.",
+  "datasets": [
+    {
+      "name": "Data A Sheaf (Maze)",
+      "group_name": "Sheaf Categories",
+      "group_id": 1,
+      "dataset_id": 1,
+      "persistence_diagram": [
+        {"id": 1, "birth": 0.0, "death": 0.90, "lifetime": 0.90, "dimension": 0, "homology_class": "H0"},
+        {"id": 2, "birth": 0.05, "death": 0.72, "lifetime": 0.67, "dimension": 1, "homology_class": "H1"},
+        {"id": 3, "birth": 0.10, "death": 0.55, "lifetime": 0.45, "dimension": 1, "homology_class": "H1"},
+        {"id": 4, "birth": 0.15, "death": 0.48, "lifetime": 0.33, "dimension": 1, "homology_class": "H1"},
+        {"id": 5, "birth": 0.22, "death": 0.60, "lifetime": 0.38, "dimension": 2, "homology_class": "H2"}
+      ],
+      "statistics": {
+        "H0": {"count": 1, "mean_lifetime": 0.90, "max_lifetime": 0.90, "total_persistence": 0.90},
+        "H1": {"count": 3, "mean_lifetime": 0.483, "max_lifetime": 0.67, "total_persistence": 1.45},
+        "H2": {"count": 1, "mean_lifetime": 0.38, "max_lifetime": 0.38, "total_persistence": 0.38}
+      },
+      "metadata": {
+        "sheaf_category": "A",
+        "description": "Maze/labyrinth topological structures",
+        "connected_solutions": ["Maze Generation", "The Maze"]
+      }
+    },
+    {
+      "name": "Data E Sheaf (Signal/Math)",
+      "group_name": "Sheaf Categories",
+      "group_id": 1,
+      "dataset_id": 2,
+      "persistence_diagram": [
+        {"id": 1, "birth": 0.0, "death": 0.85, "lifetime": 0.85, "dimension": 0, "homology_class": "H0"},
+        {"id": 2, "birth": 0.02, "death": 0.42, "lifetime": 0.40, "dimension": 0, "homology_class": "H0"},
+        {"id": 3, "birth": 0.08, "death": 0.68, "lifetime": 0.60, "dimension": 1, "homology_class": "H1"},
+        {"id": 4, "birth": 0.12, "death": 0.50, "lifetime": 0.38, "dimension": 1, "homology_class": "H1"},
+        {"id": 5, "birth": 0.20, "death": 0.65, "lifetime": 0.45, "dimension": 2, "homology_class": "H2"},
+        {"id": 6, "birth": 0.30, "death": 0.55, "lifetime": 0.25, "dimension": 2, "homology_class": "H2"}
+      ],
+      "statistics": {
+        "H0": {"count": 2, "mean_lifetime": 0.625, "max_lifetime": 0.85, "total_persistence": 1.25},
+        "H1": {"count": 2, "mean_lifetime": 0.49, "max_lifetime": 0.60, "total_persistence": 0.98},
+        "H2": {"count": 2, "mean_lifetime": 0.35, "max_lifetime": 0.45, "total_persistence": 0.70}
+      },
+      "metadata": {
+        "sheaf_category": "E",
+        "description": "Mathematical signals and transformations",
+        "connected_solutions": ["SSEUQFT", "Pendulum Solver", "The Vision"]
+      }
+    },
+    {
+      "name": "Data J Sheaf (Nature/Ecological)",
+      "group_name": "Sheaf Categories",
+      "group_id": 1,
+      "dataset_id": 3,
+      "persistence_diagram": [
+        {"id": 1, "birth": 0.0, "death": 0.78, "lifetime": 0.78, "dimension": 0, "homology_class": "H0"},
+        {"id": 2, "birth": 0.03, "death": 0.35, "lifetime": 0.32, "dimension": 0, "homology_class": "H0"},
+        {"id": 3, "birth": 0.06, "death": 0.28, "lifetime": 0.22, "dimension": 0, "homology_class": "H0"},
+        {"id": 4, "birth": 0.10, "death": 0.52, "lifetime": 0.42, "dimension": 1, "homology_class": "H1"},
+        {"id": 5, "birth": 0.18, "death": 0.40, "lifetime": 0.22, "dimension": 1, "homology_class": "H1"}
+      ],
+      "statistics": {
+        "H0": {"count": 3, "mean_lifetime": 0.44, "max_lifetime": 0.78, "total_persistence": 1.32},
+        "H1": {"count": 2, "mean_lifetime": 0.32, "max_lifetime": 0.42, "total_persistence": 0.64},
+        "H2": {"count": 0, "mean_lifetime": 0.0, "max_lifetime": 0.0, "total_persistence": 0.0}
+      },
+      "metadata": {
+        "sheaf_category": "J",
+        "description": "Nature and ecological data patterns",
+        "connected_solutions": ["Sachuest Now", "The Mice"]
+      }
+    }
+  ],
+  "metadata": {
+    "generated_by": "Data Phi Sheaf DPS-03 A-Z Classifier",
+    "total_categories": 26,
+    "categories_shown": 3,
+    "restriction_map": "sheaf_classifier_to_vision"
+  }
+}

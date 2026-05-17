@@ -92,4 +92,7 @@ BUILD_SUCCESS.md
 COMPILATION_STATUS.md
 ACTIVE_FILES_STATUS.md
 documentation/auto_*
-src/core/front_end/Persistence Viewer/PersistenceViewer
+# Xcode project binary/build artifacts in Persistence Viewer (source .swift files ARE tracked)
+src/core/front_end/Persistence Viewer/PersistenceViewer/Packages/RealityKitContent/.build/
+src/core/front_end/Persistence Viewer/PersistenceViewer/PersistenceViewer.xcodeproj/project.xcworkspace/xcuserdata/
+src/core/front_end/Persistence Viewer/PersistenceViewer/PersistenceViewer.xcodeproj/xcuserdata/

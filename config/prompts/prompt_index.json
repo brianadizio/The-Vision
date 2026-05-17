@@ -63,9 +63,11 @@
       "description": "Build restriction map exporters to Golden Cipher and Witness",
       "category": "integration",
       "priority": "medium",
-      "status": "pending",
+      "status": "completed",
+      "completed_date": "2026-05-17",
       "dependencies": ["PROMPT-VISION-003"],
-      "affects": ["new: SessionRecorder.swift", "new: RestrictionMapExporter.swift"]
+      "affects": ["new: SessionRecorder.swift", "new: RestrictionMapExporter.swift", "ContentView.swift", "PersistenceViewerApp.swift"],
+      "notes": "SessionRecorder.swift: gaze (S2 azimuth/elevation, throttled 10Hz), hand positions (R3), navigation path, delegates gestures to GestureRecorder. RestrictionMapExporter.swift: writes three restriction maps — Golden Cipher (trajectory_*.jsonl with gesture+gaze+nav events), Witness (session_*.jsonl audit trail), Data Phi Sheaf (annotations_*.json). PersistenceViewerApp.swift: auto-exports on scenePhase .background via @StateObject SessionRecorder. ContentView.swift: toolbar menu with manual 'Export Session Now' trigger and confirmation alert."
     },
     {
       "prompt_id": "PROMPT-VISION-007",
