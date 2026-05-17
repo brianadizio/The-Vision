@@ -737,6 +737,80 @@ struct PhaseSpaceLegend: View {
     }
 }
 
+// MARK: - Poincaré Section View
+
+/// 2D scatter plot of trajectory points at the current slice plane.
+/// Displays the cross-section (Poincaré section) projected onto the two perpendicular axes.
+struct PoincareSectionView: View {
+    let points: [(Float, Float)]
+    let axisLabels: (String, String)   // (horizontal, vertical)
+
+    var body: some View {
+        VStack(spacing: 4) {
+            HStack {
+                Text("Poincaré Section")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+                Spacer()
+                Text("\(axisLabels.0) vs \(axisLabels.1)")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+            }
+            .padding(.horizontal, 8)
+
+            if points.isEmpty {
+                Text("No points at this slice threshold")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else {
+                Canvas { context, size in
+                    // Compute data range for normalization
+                    let us = points.map { $0.0 }
+                    let vs = points.map { $0.1 }
+                    guard let minU = us.min(), let maxU = us.max(),
+                          let minV = vs.min(), let maxV = vs.max() else { return }
+                    let rangeU = maxU - minU > 0 ? maxU - minU : 1
+                    let rangeV = maxV - minV > 0 ? maxV - minV : 1
+                    let padding: CGFloat = 12
+
+                    for pt in points {
+                        let nx = CGFloat((pt.0 - minU) / rangeU)
+                        let ny = CGFloat((pt.1 - minV) / rangeV)
+                        let cx = padding + nx * (size.width - padding * 2)
+                        let cy = size.height - padding - ny * (size.height - padding * 2)
+                        let rect = CGRect(x: cx - 2, y: cy - 2, width: 4, height: 4)
+                        context.fill(Path(ellipseIn: rect), with: .color(.cyan.opacity(0.7)))
+                    }
+
+                    // Axis tick lines
+                    var axisPath = Path()
+                    axisPath.move(to: CGPoint(x: padding, y: size.height - padding))
+                    axisPath.addLine(to: CGPoint(x: size.width - padding, y: size.height - padding))
+                    axisPath.move(to: CGPoint(x: padding, y: padding))
+                    axisPath.addLine(to: CGPoint(x: padding, y: size.height - padding))
+                    context.stroke(axisPath, with: .color(.white.opacity(0.3)), lineWidth: 1)
+                }
+            }
+
+            // Axis labels
+            HStack {
+                Text(axisLabels.1)
+                    .font(.system(size: 9))
+                    .foregroundStyle(.secondary)
+                    .rotationEffect(.degrees(-90))
+                    .fixedSize()
+                Spacer()
+                Text(axisLabels.0)
+                    .font(.system(size: 9))
+                    .foregroundStyle(.secondary)
+            }
+            .padding(.horizontal, 8)
+        }
+        .padding(.vertical, 6)
+    }
+}
+
 // MARK: - Preview
 
 #Preview {
