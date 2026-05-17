@@ -300,8 +300,43 @@ struct PhaseSpaceTrajectoryView: View {
                         Text("Threshold (\(sliceAxis.rawValue))")
                             .font(.caption2).foregroundStyle(.secondary)
                         Slider(value: $sliceThreshold, in: -1.0...1.0, step: 0.05)
+                            .onChange(of: sliceThreshold) { _, _ in
+                                // Record Poincaré section event when threshold changes
+                                if showPoincareSection {
+                                    gestureRecorder?.record(.poincareSection, metadata: [
+                                        "view": "phaseSpace",
+                                        "axis": sliceAxis.rawValue,
+                                        "threshold": String(format: "%.2f", sliceThreshold),
+                                        "sectionPoints": "\(poincarePoints.count)"
+                                    ])
+                                }
+                            }
                         Text(String(format: "%.2f", sliceThreshold))
                             .font(.caption2).frame(width: 40)
+                    }
+
+                    // Poincaré section toggle
+                    HStack {
+                        Toggle("Poincaré Section", isOn: $showPoincareSection)
+                            .toggleStyle(.switch)
+                            .font(.caption)
+                        Spacer()
+                        if showPoincareSection {
+                            Text("\(poincarePoints.count) pts")
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+
+                    // Poincaré section 2D panel
+                    if showPoincareSection {
+                        PoincareSectionView(
+                            points: poincarePoints,
+                            axisLabels: poincareAxisLabels
+                        )
+                        .frame(height: 160)
+                        .background(Color.black.opacity(0.3))
+                        .cornerRadius(8)
                     }
                 }
             }
