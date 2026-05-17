@@ -11,14 +11,32 @@ import RealityKitContent
 
 struct ContentView: View {
     @EnvironmentObject private var sessionRecorder: SessionRecorder
+    @StateObject private var environmentManager = EnvironmentManager()
+    @State private var showEnvironmentPicker = false
     @State private var showExportConfirmation = false
 
     var body: some View {
         ExperimentListView()
             .environmentObject(sessionRecorder)
+            .environmentObject(environmentManager)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    sessionControlsButton
+                    ToolbarItemGroup {
+                        Button {
+                            showEnvironmentPicker.toggle()
+                        } label: {
+                            Label("Environment", systemImage: "squa.fill.circle")
+                                .labelStyle(.iconOnly)
+                        }
+
+                        Button {
+                            sessionRecorder.exportSession()
+                            showExportConfirmation = true
+                        } label: {
+                            Label("Export Session", systemImage: "arrow.up.doc")
+                                .labelStyle(.iconOnly)
+                        }
+                    }
                 }
             }
             .alert("Session Exported", isPresented: $showExportConfirmation) {
@@ -26,24 +44,19 @@ struct ContentView: View {
             } message: {
                 Text("Session data exported to Golden Cipher, Witness, and Data Phi Sheaf.")
             }
-    }
-
-    private var sessionControlsButton: some View {
-        Menu {
-            Button {
-                sessionRecorder.exportSession()
-                showExportConfirmation = true
-            } label: {
-                Label("Export Session Now", systemImage: "arrow.up.doc")
+            .sheet(isPresented: $showEnvironmentPicker) {
+                NavigationView {
+                    EnvironmentPicker()
+                        .environmentObject(environmentManager)
+                        .toolbar {
+                            ToolbarItem(placement: .topBarTrailing) {
+                                Button("Done") {
+                                    showEnvironmentPicker.toggle()
+                                }
+                            }
+                        }
+                }
             }
-
-            Divider()
-
-            Text("Session: \(sessionRecorder.gestureRecorder.eventCount) events")
-        } label: {
-            Label("Session", systemImage: "record.circle")
-                .labelStyle(.iconOnly)
-        }
     }
 }
 

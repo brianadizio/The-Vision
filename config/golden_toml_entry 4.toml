@@ -1,0 +1,78 @@
+[solution]
+name = "The Vision"
+slug = "the_vision"
+app_id = "GES-65"
+solution_number = 63
+mode = "interactive"
+secondary_mode = "computational"
+build_stage = 1
+current_stage = "development"
+version = "0.1.0"
+sector = ["visual", "knowledge", "computational"]
+
+[sampling]
+domains = ["3D-sphere", "3D-immersed-circle", "S2", "S3", "Rn"]
+topological_spaces = ["S2", "S3", "Rn", "SO(3)"]
+
+[computation]
+api_endpoint = "none"
+matlab_function = "none"
+batch_capable = false
+gpu_required = false
+estimated_runtime = "seconds"
+
+[types]
+input_types = ["live_trajectory", "historical_archive", "point_cloud", "persistence_diagram", "spatial_video"]
+output_types = ["immersive_visualization", "spatial_interaction_trajectory", "annotated_persistence_diagram", "session_metrics", "topological_signature"]
+
+[interactive]
+live_interface = "visionpro"
+archive_path = "/assets/processed/vision_sessions/"
+archive_format = "jsonl"
+session_data_schema = "session_id, experiment_loaded, bands_viewed, visualizations_used, interaction_events, gaze_trajectory, hand_gestures, total_duration_ms, annotations_made"
+
+[dependencies]
+requires = ["sseuqft", "the_golden_core", "the_theme"]
+depended_by = ["sachuest_now"]
+
+[[restriction_maps]]
+target = "data_phi_sheaf"
+map = "immersive_tda_export"
+format = "json"
+
+[[restriction_maps]]
+target = "sachuest_now"
+map = "environment_models"
+format = "usdz"
+
+[[restriction_maps]]
+target = "the_golden_cipher"
+map = "spatial_interaction_trajectory"
+format = "jsonl"
+
+[[restriction_maps]]
+target = "the_witness"
+map = "session_log"
+format = "jsonl"
+
+[sheaf]
+primary_sheaves = ["Data E Sheaf", "Data C Sheaf"]
+secondary_sheaves = ["Data B Sheaf", "Data I Sheaf", "Data A Sheaf", "Data J Sheaf"]
+touches_all = false
+
+[physical_tasks]
+has_physical_tasks = true
+tasks = ["LiDAR scan Sachuest", "Capture spatial video", "Record spatial audio", "Photograph Nature scenes", "Test on Vision Pro hardware"]
+
+[simulation]
+can_simulate = true
+description = "Generate synthetic persistence diagrams using MATLAB surf2patch with known genus; sample point clouds on known manifolds with controlled noise; use Enhanced_Export_Test.json as format reference"
+
+[skills]
+builder = "skills/golden-build-the-vision/SKILL.md"
+runner = "skills/golden-run-the-vision/SKILL.md"
+
+[bridge]
+claude_md = "CLAUDE.md"
+config_json = "config/solution_config.json"
+core_config = "../The Golden Core/src/core/SolutionConfigurations/the_vision.json"

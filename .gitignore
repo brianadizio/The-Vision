@@ -96,3 +96,6 @@ documentation/auto_*
 src/core/front_end/Persistence Viewer/PersistenceViewer/Packages/RealityKitContent/.build/
 src/core/front_end/Persistence Viewer/PersistenceViewer/PersistenceViewer.xcodeproj/project.xcworkspace/xcuserdata/
 src/core/front_end/Persistence Viewer/PersistenceViewer/PersistenceViewer.xcodeproj/xcuserdata/
+assets/processed/Spatial/*.MOV
+*.MOV
+.scannerwork/
