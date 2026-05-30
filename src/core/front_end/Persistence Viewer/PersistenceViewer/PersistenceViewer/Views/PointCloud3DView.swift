@@ -13,6 +13,9 @@ struct PointCloud3DView: View {
     let pointCloud: PointCloudData
     let bandName: String
     var gestureRecorder: GestureRecorder? = nil  // injected from parent for session tracking
+    /// Optional persistence diagram, used to drive per-feature spatial sonification.
+    /// When non-nil, tapping a point also plays a Shepard tone from its 3D position.
+    var persistenceFeatures: [PersistenceFeature]? = nil
 
     @State private var rotation: simd_quatf = simd_quatf(angle: 0, axis: [0, 1, 0])
     @State private var scale: Float = 1.0
@@ -22,6 +25,12 @@ struct PointCloud3DView: View {
     // Pinch-select state
     @State private var selectedPointIndex: Int? = nil
     @State private var showSelectionInfo: Bool = false
+
+    // Spatial audio
+    @State private var audioEngine = SpatialAudioEngine()
+    /// Cached normalised positions (matches what RealityKit renders) so the
+    /// listener perceives audio coming from the same direction as the visual point.
+    @State private var normalisedPositions: [SIMD3<Float>] = []
 
     var body: some View {
         VStack(spacing: 0) {
@@ -63,6 +72,33 @@ struct PointCloud3DView: View {
                             Image(systemName: "arrow.counterclockwise")
                             Text("Reset").font(.caption)
                         }
+                    }
+
+                    Divider().frame(height: 20)
+
+                    // Spatial audio toggle (Shepard tones from feature positions)
+                    Button(action: {
+                        audioEngine.isActive.toggle()
+                        if audioEngine.isActive {
+                            audioEngine.startAmbient()
+                        } else {
+                            audioEngine.stopAll()
+                        }
+                    }) {
+                        Image(systemName: audioEngine.isActive
+                              ? "waveform.circle.fill"
+                              : "waveform.circle")
+                            .foregroundColor(audioEngine.isActive ? .coastalPrimary : .secondary)
+                    }
+                    .help("Spatial audio (Shepard tones)")
+
+                    // Sequence: birth/death sweep through all persistence features
+                    if let features = persistenceFeatures, !features.isEmpty {
+                        Button(action: { playBirthDeathSequence(features: features) }) {
+                            Image(systemName: "play.circle")
+                                .foregroundColor(audioEngine.isActive ? .coastalPrimary : .secondary)
+                        }
+                        .disabled(!audioEngine.isActive)
                     }
                 }
             }
@@ -159,6 +195,7 @@ struct PointCloud3DView: View {
                             "pointIndex": "\(nextIndex)",
                             "totalPoints": "\(pointCloud.nPoints)"
                         ])
+                        sonifySelectedPoint(index: nextIndex)
                     }
             )
 
@@ -213,6 +250,60 @@ struct PointCloud3DView: View {
             .background(Color.coastalBackground)
         }
         .navigationTitle(bandName)
+        .onAppear {
+            normalisedPositions = normalizePoints(pointCloud.simd3Points)
+        }
+        .onDisappear {
+            audioEngine.stopAll()
+        }
+    }
+
+    // MARK: - Spatial Audio Helpers
+
+    /// Map an arbitrary point index to a Shepard-tone burst from its normalised 3D location.
+    private func sonifySelectedPoint(index: Int) {
+        guard audioEngine.isActive,
+              index >= 0,
+              index < normalisedPositions.count else { return }
+        let position = normalisedPositions[index]
+        // Choose dimension by index third (rough proxy when no homology metadata).
+        // If we have explicit persistence features, prefer those.
+        let dimension: Int
+        let lifetime: Double
+        if let features = persistenceFeatures, !features.isEmpty {
+            let feat = features[index % features.count]
+            dimension = max(0, min(2, feat.dimension))
+            lifetime = feat.lifetime ?? max(0.0, (feat.death ?? feat.birth) - feat.birth)
+        } else {
+            dimension = (index / max(1, normalisedPositions.count / 3)) % 3
+            lifetime = 0.3
+        }
+        audioEngine.sonifyFeature(at: position,
+                                  dimension: dimension,
+                                  lifetime: lifetime,
+                                  amplitudeScale: 0.8)
+    }
+
+    /// Play the full birth/death sequence using cached positions + features.
+    private func playBirthDeathSequence(features: [PersistenceFeature]) {
+        guard !normalisedPositions.isEmpty else { return }
+        let positions = normalisedPositions
+        let maxLifetime: Double = features.map { feat -> Double in
+            if let lt = feat.lifetime { return lt }
+            if let d = feat.death { return d - feat.birth }
+            return 0.0
+        }.max() ?? 1.0
+        let payload: [(birth: Double,
+                       death: Double?,
+                       dimension: Int,
+                       position: SIMD3<Float>)] = features.enumerated().map { (idx, f) in
+            let pos = positions[idx % positions.count]
+            return (birth: f.birth,
+                    death: f.death,
+                    dimension: max(0, min(2, f.dimension)),
+                    position: pos)
+        }
+        audioEngine.sonifyBirthDeathSequence(features: payload, maxLifetime: maxLifetime)
     }
 
     // MARK: - RealityKit Entity Creation

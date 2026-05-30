@@ -55,9 +55,11 @@
       "description": "Spatial audio — map Betti numbers to Shepard tones",
       "category": "feature",
       "priority": "medium",
-      "status": "pending",
+      "status": "completed",
+      "completed_date": "2026-05-29",
       "dependencies": ["PROMPT-VISION-001"],
-      "affects": ["new: SpatialAudioEngine.swift", "BettiCurvesView.swift"]
+      "affects": ["new: SpatialAudioEngine.swift", "BettiCurvesView.swift", "PointCloud3DView.swift"],
+      "notes": "SpatialAudioEngine extended with AVAudioEnvironmentNode (HRTF) for per-feature 3D positioning. New API: sonifyFeature(at:dimension:lifetime:amplitudeScale:) places a mono Shepard buffer at a SIMD3<Float> world position; sonifyBirthDeathSequence(features:maxLifetime:) sweeps birth→death events with persistence-scaled sustain and ADSR envelope (attack transient on birth, release tail on death); updateListener(position:yaw:pitch:roll:) re-aims the HRTF listener. Procedural ocean wash via makeOceanAmbientBuffer: Voss-McCartney pink noise low-passed to surf rumble and modulated by 0.18 Hz/1.3 Hz LFOs, looped through the environment node behind the listener (startAmbient/stopAmbient toggled by ambientEnabled). PointCloud3DView gets new audioEngine state, a waveform-toggle that flips isActive and starts ambient, a play.circle button that drives the full birth/death sequence when persistenceFeatures is passed, and tap-select now calls sonifySelectedPoint which uses cached normalisedPositions (computed onAppear from pointCloud.simd3Points so audio source positions match the visible sphere positions). BettiCurvesView audio integration unchanged. Data Y Sheaf bridge in place (Sachuest field recordings will replace synthesized wash once PHYS-VISION-003 lands)."
     },
     {
       "prompt_id": "PROMPT-VISION-006",

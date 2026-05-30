@@ -17,6 +17,13 @@ struct BettiCurvesView: View {
     @State private var showH2: Bool = true
     @State private var selectedThresholdIndex: Int? = nil
     @State private var showValues: Bool = true
+    @State private var audioEngine = SpatialAudioEngine()
+
+    // MARK: - Computed helpers for audio
+
+    private var maxBetti: Double {
+        bettiCurves.values.flatMap { $0 }.max() ?? 1.0
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -57,6 +64,28 @@ struct BettiCurvesView: View {
                         Image(systemName: showValues ? "number.circle.fill" : "number.circle")
                             .foregroundColor(showValues ? .coastalPrimary : .secondary)
                     }
+
+                    Divider().frame(height: 20)
+
+                    // Audio toggle
+                    Button(action: {
+                        audioEngine.isActive.toggle()
+                        if !audioEngine.isActive { audioEngine.stopAll() }
+                    }) {
+                        Image(systemName: audioEngine.isActive ? "speaker.wave.3.fill" : "speaker.slash")
+                            .foregroundColor(audioEngine.isActive ? .coastalPrimary : .secondary)
+                    }
+
+                    // Sweep play button (plays all thresholds in sequence)
+                    Button(action: {
+                        audioEngine.isActive = true
+                        audioEngine.sonifySweep(bettiCurves: bettiCurves)
+                    }) {
+                        Image(systemName: "play.circle")
+                            .foregroundColor(.coastalPrimary)
+                    }
+                    .disabled(!audioEngine.isActive)
+                    .opacity(audioEngine.isActive ? 1.0 : 0.4)
                 }
             }
             .padding()
@@ -93,6 +122,10 @@ struct BettiCurvesView: View {
                 .padding()
         }
         .navigationTitle(bandName)
+        .onChange(of: selectedThresholdIndex) { newIndex in
+            guard let idx = newIndex, idx < bettiCurves.values.count else { return }
+            audioEngine.sonifyThreshold(bettiValues: bettiCurves.values[idx], maxBetti: maxBetti)
+        }
     }
 }
 
