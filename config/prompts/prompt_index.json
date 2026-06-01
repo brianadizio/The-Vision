@@ -21,9 +21,11 @@
       "description": "Add Nature environment backgrounds from Sachuest Point",
       "category": "feature",
       "priority": "high",
-      "status": "pending",
+      "status": "completed",
+      "completed_date": "2026-05-31",
       "dependencies": ["PHYS-VISION-002", "PHYS-VISION-004"],
-      "affects": ["ContentView.swift", "CoastalDesignSystem.swift"]
+      "affects": ["ContentView.swift", "CoastalDesignSystem.swift", "EnvironmentManager.swift", "ImmersiveBackgroundScene.swift", "PersistenceViewerApp.swift"],
+      "notes": "Procedural gradient skybox system delivered (placeholder phase per requirement 3 — real Sachuest captures swap in via texturePath when PHYS-VISION-002/004 land). EnvironmentManager: 4 presets (Ocean Sunset, Morning Mist, Night Sky, Coastal Day) with ObservableObject selection + loadRealEnvironment hook for equirectangular panoramas. ImmersiveBackgroundScene: inverted 50m sphere with UnlitMaterial; BakedSkyboxRenderer renders each preset's LinearGradient into a 2048x1024 equirectangular CGImage on CPU; texture-mode path ready for real panoramas. EnvironmentPreset.recommendedForeground computes Rec.709 luminance for readable chrome (requirement 5). This run wired the system end-to-end: PersistenceViewerApp now declares ImmersiveSpace(id: immersiveBackgroundID) and owns the shared EnvironmentManager; ContentView gains an Enter/Exit Nature View toolbar toggle (openImmersiveSpace/dismissImmersiveSpace), consumes the shared manager, applies recommendedForeground as .tint, and fixes the invalid 'squa.fill.circle' SF Symbol -> 'globe.americas.fill'. Sync-duplicate '* 2.swift' files NOT added. Build verification limited to swiftc -parse (visionOS 26.5 SDK + simulator runtime not installed in build env)."
     },
     {
       "prompt_id": "PROMPT-VISION-003",
