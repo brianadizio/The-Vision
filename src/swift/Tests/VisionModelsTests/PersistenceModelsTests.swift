@@ -116,4 +116,75 @@ final class PersistenceModelsTests: XCTestCase {
         let embeddings = ManifoldEmbeddings(isomap: viz, diffusionMap: nil, lle: viz)
         XCTAssertEqual(embeddings.availableTypes, ["Isomap", "LLE"])
     }
+
+    // MARK: - PersistenceExperiment aggregation
+
+    private func makeBand(configId: Int, bandId: Int) -> Band {
+        Band(
+            configId: configId, bandId: bandId,
+            persistenceDiagram: nil, statistics: nil,
+            bettiCurves: nil, persistenceLandscape: nil,
+            pointCloud: nil, metadata: nil
+        )
+    }
+
+    func testExperimentAggregatesConfigAndBandCounts() {
+        let configs = [
+            Configuration(configId: 0, bands: [makeBand(configId: 0, bandId: 0),
+                                               makeBand(configId: 0, bandId: 1)]),
+            Configuration(configId: 1, bands: [makeBand(configId: 1, bandId: 0)])
+        ]
+        let exp = PersistenceExperiment(
+            name: "demo", sourcePath: "/tmp/demo", exportTimestamp: "2026-06-06",
+            globalVisualizations: nil, configurations: configs
+        )
+        XCTAssertEqual(exp.configCount, 2)
+        XCTAssertEqual(exp.totalBandCount, 3)
+        XCTAssertFalse(exp.hasGlobalVisualizations)
+        // Configuration.id mirrors its configId.
+        XCTAssertEqual(configs[1].id, 1)
+    }
+
+    func testEmptyExperimentHasZeroCounts() {
+        let exp = PersistenceExperiment(
+            name: "empty", sourcePath: "", exportTimestamp: "",
+            globalVisualizations: nil, configurations: []
+        )
+        XCTAssertEqual(exp.configCount, 0)
+        XCTAssertEqual(exp.totalBandCount, 0)
+        XCTAssertFalse(exp.hasGlobalVisualizations)
+    }
+
+    func testExperimentReportsGlobalVisualizationsWhenPresent() {
+        let global = GlobalVisualizations(
+            globalPCA: nil, phaseSpace: nil,
+            manifoldEmbeddings: nil, scattererLabels: nil
+        )
+        let exp = PersistenceExperiment(
+            name: "viz", sourcePath: "", exportTimestamp: "",
+            globalVisualizations: global, configurations: []
+        )
+        XCTAssertTrue(exp.hasGlobalVisualizations)
+    }
+
+    // MARK: - PersistenceLandscapeData shape
+
+    func testLandscapeLayersAndBinsFromShape() {
+        let landscape = PersistenceLandscapeData(values: [[0, 1], [2, 3]], shape: [2, 5])
+        XCTAssertEqual(landscape.numberOfLayers, 2)
+        XCTAssertEqual(landscape.numberOfBins, 5)
+    }
+
+    func testLandscapeWithEmptyShapeDefaultsToZero() {
+        let landscape = PersistenceLandscapeData(values: [], shape: [])
+        XCTAssertEqual(landscape.numberOfLayers, 0)
+        XCTAssertEqual(landscape.numberOfBins, 0)
+    }
+
+    // MARK: - LabelData flattening
+
+    func testLabelDataFlattensDoublesToInts() {
+        let labels = LabelData(labels: [0.0, 1.9, 2.4, 3.0], nLabels: 4, description: nil)
+        XCTAssertEqual(labels.flatLabels, [0, 1, 2, 3])
+    }
 }
