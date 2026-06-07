@@ -18,7 +18,10 @@ struct PersistenceViewerApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            // PROMPT-VISION-007: arrive at the calm Sachuest Nature reserve
+            // first; SachuestWelcomeView gates the transition into the data
+            // space (ContentView) and owns the Sachuest Now handoff.
+            SachuestWelcomeView()
                 .environmentObject(sessionRecorder)
                 .environmentObject(environmentManager)
         }
