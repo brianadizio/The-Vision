@@ -81,9 +81,11 @@
       "description": "Integrate with Sachuest Now as the initial calm experience",
       "category": "integration",
       "priority": "low",
-      "status": "pending",
+      "status": "completed",
+      "completed_date": "2026-06-07",
       "dependencies": ["PROMPT-VISION-001", "PROMPT-VISION-002"],
-      "affects": ["ContentView.swift", "PersistenceViewerApp.swift"]
+      "affects": ["new: SachuestWelcomeView.swift", "PersistenceViewerApp.swift"],
+      "notes": "SachuestWelcomeView.swift created as the root window (replaces direct ContentView mount in PersistenceViewerApp). Implements a three-phase SachuestWelcomePhase state machine — arriving (full-bleed Nature scene, 'Welcome to Sachuest', a gentle Begin affordance + Skip-to-data) → transition (opens the shared immersive skybox via openImmersiveSpace(immersiveBackgroundID), shows a poetic Nature→math bridge, holds ~2.2s) → exploring (the normal ContentView data space). Self-paced per requirement 3 (no timed gates beyond the optional transition hold). Sachuest Now bridge (requirement 4): SachuestHandoff Codable payload (environmentName, texturePath, source, createdAt) with a sachuest-now://session?env=&texture= deepLinkURL; handoffToSachuestNow writes handoff_latest.json to assets/processed/sachuest_now via SachuestHandoffWriter and opens the deep link, confirming via alert either way so the calm experience never dead-ends. Shared 3D environment assets (requirement 5): reuses the app-level EnvironmentManager + EnvironmentPreset skybox presets — the same gradients/textures that wrap the data space are what the handoff hands to the game. backdrop uses currentEnvironment.gradient and recommendedForeground for readable chrome. Build verification: visionOS 26.5 SDK present but only 26.1–26.4 simulator runtimes installed, so full xcodebuild is blocked; verified via swiftc -parse against XRSimulator26.5 SDK (exit 0 for both SachuestWelcomeView.swift and PersistenceViewerApp.swift) and confirmed all cross-file symbol references (immersiveBackgroundID, EnvironmentManager.recommendedForeground/gradient, SessionRecorder.exportSession, Coastal* tokens) exist. Also removed 140+ macOS iCloud sync-duplicate artifacts from the Solution tree."
     }
   ]
 }
